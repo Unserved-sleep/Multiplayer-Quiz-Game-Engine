@@ -6,7 +6,7 @@ class Question(ABC):
     def __init__(self, id, text, category, base_points):
         self.id = id                  # unique question id
         self.text = text              # question text
-        self.category = category      # category (math, geo, etc.)
+        self.category = category      # category (math, nature, etc.)
         self.base_points = base_points  # marks for question
 
     @abstractmethod
