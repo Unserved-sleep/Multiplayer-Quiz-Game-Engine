@@ -1,3 +1,15 @@
+#Create a Class Question with id, text, category, points
+#add check() method to validate answer
+#def __str__() for string representation
+#def __eq__() to compare questions by id
+#Create ExactQuestion and NumericalQuestion subclasses
+#make ExactQuestion case insensitive
+#make NumericalQuestion accept ±0.01 tolerance
+#create QuestionBank to store questions, add get() and get_by_category() methods
+#add random_quiz(n) to get n random questions
+#def parse_and_add() to convert raw data into objects and add to bank
+#create main block for testing 
+
 from abc import ABC, abstractmethod
 import random
 
