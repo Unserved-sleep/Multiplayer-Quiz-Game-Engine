@@ -12,69 +12,75 @@ rounds = [
 ("charlie", [("Q2","Paris"),("Q4","12"),("Q5","cheetah"), ("Q6","1024")]),
 ]
 
-class Player:
-    def __init__(self, name, score, correct_count, wrong_count, answer_history):
-        self.name = name
-        self.score = score
-        self.correct_count = correct_count
-        self.wrong_count = wrong_count
-        self.answer_history = answer_history
-        self.streak_earned = False
+class Player:  #Player Class
+    def __init__(self, name, score, correct_count, wrong_count, answer_history):  #Constructor
+        self.name: str = name
+        self.score: int = score
+        self.correct_count: int = correct_count
+        self.wrong_count: int = wrong_count
+        self.answer_history: list = answer_history
+        self.streak_earned: bool = False
 
     def track_streak(self):
-        streak = 0
-        for i in self.answer_history:
-            if i == 1:
+        """Checking the streak and multiplying score"""
+        streak: int = 0
+        for ite_rater in self.answer_history:
+            if ite_rater == 1:
                 streak += 1
             if streak == 3:
                 self.score *= 1.5
                 self.streak_earned = True
-            if i == 0:
+            if ite_rater == 0:
                 streak = 0
 
     def accuracy(self):
+        """Calculating accuracy taking correct and incorrect answers"""
         return self.correct_count / (self.correct_count + self.wrong_count) *100
     def __str__(self):
+        """Formatted output for each player"""
         return f"Player {self.name} has {int(self.score)} points with {self.accuracy()}% accuracy and has streak {self.streak_earned}"
 
     def __it__(self,other):
-        x = (self.score, self.name) >= (other.score, other.name)
+        """Iterator for comparing different players"""
+        x: bool = (self.score, self.name) >= (other.score, other.name)
         return x
 
 
 class ScoringEngine:
+    """Scoring engine for player scoring"""
     def grade_round(self, player, answer_list):
-        i = 0
-        report = []
+        """Result for each of the questions given to the players"""
+        i_iterator: int = 0
+        report: list = []
         for ques in answer_list:
-            if player[1][i][0] == ques[0]:
-                if player[1][i][1] == ques[2]:
+            if player[1][i_iterator][0] == ques[0]:
+                if player[1][i_iterator][1] == ques[2]:
                     report.append(1)
                 else:
                     report.append(0)
-                i += 1
+                i_iterator += 1
             else:
                 report.append(-1)
-            if i == 4:
+            if i_iterator == 4:
                 break
         while len(report) != 6:
             report.append(-1)
         return report
 
-results = []
-members = []
+results: list = []
+members: list = []
 
 for rn in rounds:
-    sc = ScoringEngine()
+    sc = ScoringEngine() #each player report
     results.append(sc.grade_round(rn, questions_raw))
 iterator2 = 0
 
 for r in results:
-    correct = 0
-    wrong = 0
-    not_attempted = 0
-    total_score = 0
-    iterator = 0
+    correct: int = 0
+    wrong: int = 0
+    not_attempted: int = 0
+    total_score: int = 0
+    iterator: int = 0
     for q in r:
         if q == 1:
             correct += 1
@@ -84,20 +90,20 @@ for r in results:
         else:
             not_attempted += 1
         iterator += 1
-    members.append(Player(rounds[iterator2][0], total_score, correct, wrong, r))
+    members.append(Player(rounds[iterator2][0], total_score, correct, wrong, r))  #creating player objects
     members[-1].track_streak()
     members[-1].accuracy()
     iterator2 += 1
 
 for m in members:
-    print(m.__str__())
+    print(m.__str__())  #formatted printing of result
 
 for i in range(len(members)):
     for j in range(len(members)):
         if Player.__it__(members[i],members[j]):
-            members[i], members[j] = members[j], members[i]
+            members[i], members[j] = members[j], members[i]  #arranging of the players
 
-leaderboard = []
+leaderboard: list = []
 for m in members:
     leaderboard.append(m.name)
-print(leaderboard)
+print(leaderboard) #leaderboard based on scores achieved
